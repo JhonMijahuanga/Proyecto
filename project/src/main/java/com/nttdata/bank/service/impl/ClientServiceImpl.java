@@ -65,4 +65,10 @@ public class ClientServiceImpl implements ClientService {
         return clientRepository.deleteById(id)
                 .switchIfEmpty(Mono.error(new Exception("NOT_FOUND_CLIENT")));
     }
+
+    @Override
+    public Mono<Client> findById(String id) {
+
+        return clientRepository.findById(id);
+    }
 }

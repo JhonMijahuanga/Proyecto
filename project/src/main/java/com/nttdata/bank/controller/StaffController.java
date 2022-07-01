@@ -2,6 +2,7 @@ package com.nttdata.bank.controller;
 
 import com.nttdata.bank.model.bean.Staff;
 import com.nttdata.bank.service.StaffService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/v1/staffs")
+@Slf4j
 public class StaffController {
 
     @Autowired
@@ -17,7 +19,7 @@ public class StaffController {
 
     @PostMapping
     public Mono<Staff> register(@RequestBody Staff staff){
-
+        log.info("staff: "+staff);
         return staffService.save(staff);
     }
 

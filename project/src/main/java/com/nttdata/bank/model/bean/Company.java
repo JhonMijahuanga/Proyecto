@@ -16,6 +16,5 @@ public class Company {
     private String[] signers;
     private String nameCompany;
     private String ruc;
-    @Builder.Default
-    private String assetType="COMPANY";
+
 }

@@ -17,7 +17,5 @@ public class Staff {
     private String name;
     private String lastName;
     private String dni;
-    @Builder.Default
-    private String assetType="STAFF";
 
 }

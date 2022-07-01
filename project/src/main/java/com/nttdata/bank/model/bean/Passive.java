@@ -18,7 +18,7 @@ public class Passive {
     @Id
     private String id;
     private String idClient;
-    private String[] typeAccount; //Ahorro, Cuenta corriente, Plazo fijo
+    private String typeAccount; //Ahorro, Cuenta corriente, Plazo fijo
     private double commission; //comision
     private double availableBalance; //Saldo disponible
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
