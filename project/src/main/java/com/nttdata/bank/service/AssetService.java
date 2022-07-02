@@ -4,14 +4,17 @@ import com.nttdata.bank.model.bean.Asset;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Interfaz de activo.
+ */
 public interface AssetService {
 
-    Flux<Asset> getAllAsset();
+  Flux<Asset> getAllAsset();
 
-    Mono<Asset> saveAsset(Asset asset);
+  Mono<Asset> saveAsset(Asset asset);
 
-    Mono<Asset> updateAsset(String id, Asset asset);
+  Mono<Asset> updateAsset(String id, Asset asset);
 
-    Mono<Void> deleteAsset(String id);
+  Mono<Void> deleteAsset(String id);
 
 }

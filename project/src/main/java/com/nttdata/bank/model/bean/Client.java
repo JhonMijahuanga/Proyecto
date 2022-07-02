@@ -8,17 +8,19 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
-@Document(collection="clients")
+/**
+ * Clase cliente.
+ */
+@Document(collection = "clients")
 @Data
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Client {
 
-    @Id
-    private String id;
-    private String idCompany;
-    private String idStaff;
-    private TypeClient typeClient;
+  @Id
+  private String id;
+  private String idCompany;
+  private String idStaff;
+  private TypeClient typeClient;
 }

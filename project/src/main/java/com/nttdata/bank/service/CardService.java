@@ -4,14 +4,17 @@ import com.nttdata.bank.model.bean.Card;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Servicio de tarjeta.
+ */
 public interface CardService {
 
-    Mono<Card> saveCard(Card card);
+  Mono<Card> saveCard(Card card);
 
-    Flux<Card> getAllCard();
+  Flux<Card> getAllCard();
 
-    Mono<Card> updateCard(String id, Card card);
+  Mono<Card> updateCard(String id, Card card);
 
-    Mono<Void> deleteCard(String id);
+  Mono<Void> deleteCard(String id);
 
 }

@@ -12,63 +12,58 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Implementacion del servicio del cliente.
+ */
 @Service
 public class ClientServiceImpl implements ClientService {
 
-    private static final Logger log= LoggerFactory.getLogger(ClientServiceImpl.class);
+  private static final Logger log = LoggerFactory.getLogger(ClientServiceImpl.class);
 
-    @Autowired
-    private ClientRepository clientRepository;
+  @Autowired
+  private ClientRepository clientRepository;
 
-    @Autowired
-    private StaffRepository staffRepository;
+  @Autowired
+  private StaffRepository staffRepository;
 
-    @Override
-    public Flux<Client> getAll() {
+  @Override
+  public Flux<Client> getAll() {
 
-        return clientRepository.findAll();
-        /*List<Staff> staff = new ArrayList<>();
-        staff= (List<Staff>) clientRepository.findAll().collectList();
-        List<Staff> finalStaff = staff;
-        Mono.just(staff).doOnNext(string -> {
-             if (string.equals("STAFF"))
-                 Mono<List<Client>> staff1 = new Mono<List<Client>>;
-                    finalStaff.set(string);
-         })
-                .block();*/
-        //return clientRepository.findAll().collectList().flux().fromIterable()
-    }
-    @Override
-    public Mono<Client> save(Client client) {
-        return clientRepository.save(client);
-    }
+    return clientRepository.findAll();
 
-    @Override
-    public Mono<Client> updateClient(String id, Client client) {
-        return clientRepository.findById(id)
-                .switchIfEmpty(Mono.error(new Exception("CLIENT_NOT_FOUND")))
-                .map(p -> {
-                    client.setId(id);
-                    if (client.getIdCompany() != null)
-                        client.setIdCompany(client.getIdCompany());
-                    if (client.getIdStaff() != null) client.setIdStaff(client.getIdStaff());
-                    return client;
-                })
-                .flatMap(clientRepository::save);
-    }
+  }
 
-    @Override
-    public Mono<Void> deleteClient(String id) {
-        return clientRepository.deleteById(id)
-                .switchIfEmpty(Mono.error(new Exception("NOT_FOUND_CLIENT")));
-    }
+  @Override
+  public Mono<Client> save(Client client) {
+    return clientRepository.save(client);
+  }
 
-    @Override
-    public Mono<Client> findById(String id) {
+  @Override
+  public Mono<Client> updateClient(String id, Client client) {
+    return clientRepository.findById(id)
+        .switchIfEmpty(Mono.error(new Exception("CLIENT_NOT_FOUND")))
+        .map(p -> {
+          client.setId(id);
+          if (client.getIdCompany() != null) {
+            client.setIdCompany(client.getIdCompany());
+          }
+          if (client.getIdStaff() != null) {
+            client.setIdStaff(client.getIdStaff());
+          }
+          return client;
+        })
+        .flatMap(clientRepository::save);
+  }
 
-        return clientRepository.findById(id);
-    }
+  @Override
+  public Mono<Void> deleteClient(String id) {
+    return clientRepository.deleteById(id)
+        .switchIfEmpty(Mono.error(new Exception("NOT_FOUND_CLIENT")));
+  }
+
+  @Override
+  public Mono<Client> findById(String id) {
+
+    return clientRepository.findById(id);
+  }
 }

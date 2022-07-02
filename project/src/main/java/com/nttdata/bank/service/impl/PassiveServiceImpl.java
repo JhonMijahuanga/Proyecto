@@ -12,48 +12,53 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Implementacion de servicio pasivo.
+ */
 @Slf4j
 @Service
-public class PassiveServiceImpl implements PassiveService{
+public class PassiveServiceImpl implements PassiveService {
 
-    @Autowired
-    private PassiveRepository passiveRepository;
+  @Autowired
+  private PassiveRepository passiveRepository;
 
-    @Autowired
-    private ClientService clientService;
+  @Autowired
+  private ClientService clientService;
 
-    @Override
-    public Flux<Passive> getAllPassive() {
+  @Override
+  public Flux<Passive> getAllPassive() {
 
-        return passiveRepository.findAll();
+    return passiveRepository.findAll();
+  }
+
+  @Override
+  public Mono<Passive> savePassive(Passive passive) {
+
+    Mono<Passive> passiveMono = null;
+    if (clientService.findById(passive.getIdClient()).block().getTypeClient().getName()
+        .equals("STAFF")) {
+      try {
+        if (!passiveRepository.findByTypeAccount(passive.getTypeAccount()).block()
+            .equals(null)) {
+          throw new MyException(HttpStatus.BAD_REQUEST, "COUNT_NOT_FOUND");
+        }
+      } catch (NullPointerException exception) {
+        passiveMono = passiveRepository.save(passive);
+        log.info("AGREGADO " + passive.getIdClient());
+      }
     }
-
-    @Override
-    public Mono<Passive> savePassive(Passive passive) {
-
-            Mono<Passive> passiveMono = null;
-            if(clientService.findById(passive.getIdClient()).
-                    block().getTypeClient().getName().equals("STAFF")){
-                try{
-                    if(!passiveRepository.findByTypeAccount(passive.getTypeAccount()).block().equals(null)){
-                        throw new MyException(HttpStatus.BAD_REQUEST,"COUNT_NOT_FOUND");
-                    }
-                }catch(NullPointerException exception){
-                    passiveMono = passiveRepository.save(passive);
-                    log.info("AGREGADO "+passive.getIdClient());
-                }
-            }
-            if (clientService.findById(passive.getIdClient()).block().getTypeClient().getName().equals("COMPANY")){
-                if(!passive.getTypeAccount().equals("CURRENT")){
-                    throw new MyException(HttpStatus.BAD_REQUEST,"SOLO AGREGA CUENTAS CORRIENTES");
-                }else {
-                    log.info("AGREGADO");
-                    return passiveRepository.save(passive);
-                }
-
-            }
-            return passiveMono;
+    if (clientService.findById(passive.getIdClient()).block().getTypeClient().getName()
+        .equals("COMPANY")) {
+      if (!passive.getTypeAccount().equals("CURRENT")) {
+        throw new MyException(HttpStatus.BAD_REQUEST, "SOLO AGREGA CUENTAS CORRIENTES");
+      } else {
+        log.info("AGREGADO");
+        return passiveRepository.save(passive);
+      }
 
     }
+    return passiveMono;
+
+  }
 
 }

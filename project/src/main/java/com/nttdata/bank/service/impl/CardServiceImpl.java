@@ -13,40 +13,55 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Servicio implementado de servicio de tarjeta.
+ */
 @Service
 public class CardServiceImpl implements CardService {
 
-    @Autowired
-    private CardRepository cardRepository;
+  @Autowired
+  private CardRepository cardRepository;
 
-    @Override
-    public Mono<Card> saveCard(Card card) {
-        return cardRepository.save(card);
-    }
+  @Override
+  public Mono<Card> saveCard(Card card) {
+    return cardRepository.save(card);
+  }
 
-    @Override
-    public Flux<Card> getAllCard() {
-        return cardRepository.findAll();
-    }
+  @Override
+  public Flux<Card> getAllCard() {
+    return cardRepository.findAll();
+  }
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Mono<Card> updateCard(@PathVariable("id") String id, @RequestBody Card card) {
-        return cardRepository.findById(id)
-                .switchIfEmpty(Mono.error(new Exception("CLIENT NOT FOUND")))
-                .map(p -> {
-                    card.setId(id);
-                    if (card.getNumberCard() != null) card.setNumberCard(card.getNumberCard());
-                    if (card.getAvailableBalance() >= 0) card.setAvailableBalance(card.getAvailableBalance());
-                    if (card.getLineCredit() >= 0) card.setLineCredit(card.getLineCredit());
-                    return card;
-                })
-                .flatMap(cardRepository::save);
-    }
+  /**
+   * Method Register Movement.
+   *
+   * @param id *
+   * @return card
+   */
+  @PutMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public Mono<Card> updateCard(@PathVariable("id") String id, @RequestBody Card card) {
+    return cardRepository.findById(id)
+        .switchIfEmpty(Mono.error(new Exception("CLIENT NOT FOUND")))
+        .map(p -> {
+          card.setId(id);
+          if (card.getNumberCard() != null) {
+            card.setNumberCard(card.getNumberCard());
+          }
+          if (card.getAvailableBalance() >= 0) {
+            card.setAvailableBalance(card.getAvailableBalance());
+          }
+          if (card.getLineCredit() >= 0) {
+            card.setLineCredit(card.getLineCredit());
+          }
+          return card;
+        })
+        .flatMap(cardRepository::save);
+  }
 
-    @Override
-    public Mono<Void> deleteCard(String id) {
-        return cardRepository.deleteById(id)
-                .switchIfEmpty(Mono.error(new Exception("NOT_FOUND_CARD")));
-    }
+  @Override
+  public Mono<Void> deleteCard(String id) {
+    return cardRepository.deleteById(id)
+        .switchIfEmpty(Mono.error(new Exception("NOT_FOUND_CARD")));
+  }
 }

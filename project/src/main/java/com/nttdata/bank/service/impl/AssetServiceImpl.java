@@ -8,33 +8,36 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Servicio implementados de activo.
+ */
 @Service
 public class AssetServiceImpl implements AssetService {
 
-    @Autowired
-    private AssetRepository assetRepository;
+  @Autowired
+  private AssetRepository assetRepository;
 
-    @Override
-    public Flux<Asset> getAllAsset() {
+  @Override
+  public Flux<Asset> getAllAsset() {
 
-        return assetRepository.findAll();
-    }
+    return assetRepository.findAll();
+  }
 
-    @Override
-    public Mono<Asset> saveAsset(Asset asset) {
+  @Override
+  public Mono<Asset> saveAsset(Asset asset) {
 
-        return assetRepository.save(asset);
+    return assetRepository.save(asset);
 
-    }
+  }
 
-    @Override
-    public Mono<Asset> updateAsset(String id, Asset asset) {
-        return assetRepository.save(asset);
-    }
+  @Override
+  public Mono<Asset> updateAsset(String id, Asset asset) {
+    return assetRepository.save(asset);
+  }
 
-    @Override
-    public Mono<Void> deleteAsset(String id) {
-        return assetRepository.deleteById(id)
-                .switchIfEmpty(Mono.error(new Exception("NOT FOUND ASSET")));
-    }
+  @Override
+  public Mono<Void> deleteAsset(String id) {
+    return assetRepository.deleteById(id)
+        .switchIfEmpty(Mono.error(new Exception("NOT FOUND ASSET")));
+  }
 }

@@ -4,13 +4,16 @@ import com.nttdata.bank.model.bean.Company;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Clase compañia servicio.
+ */
 public interface CompanyService {
 
-    Flux<Company> getAll();
+  Flux<Company> getAll();
 
-    Mono<Company> save(Company company);
+  Mono<Company> save(Company company);
 
-    Mono<Company> updateCompany(String id, Company company);
+  Mono<Company> updateCompany(String id, Company company);
 
-    Mono<Void> deleteCompany(String id);
+  Mono<Void> deleteCompany(String id);
 }

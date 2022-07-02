@@ -4,15 +4,18 @@ import com.nttdata.bank.model.bean.Staff;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Interfaz de servicio personal.
+ */
 public interface StaffService {
 
-    Flux<Staff> getAll();
+  Flux<Staff> getAll();
 
-    Mono<Staff> save(Staff staff);
+  Mono<Staff> save(Staff staff);
 
-    //Mono<Staff> update(Mono<Staff> staffMono, String id);
+  //Mono<Staff> update(Mono<Staff> staffMono, String id);
 
-    Mono<Staff> updateStaff(String id, Staff staff);
+  Mono<Staff> updateStaff(String id, Staff staff);
 
-    Mono<Void> deleteStaff(String id);
+  Mono<Void> deleteStaff(String id);
 }
