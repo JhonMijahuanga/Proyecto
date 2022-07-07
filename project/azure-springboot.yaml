@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jhonmongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jhonmongodb
+  template:
+    metadata:
+      labels:
+        app: jhonmongodb
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+        - name: jhonmongodb
+          image: mongo:latest
+          ports:
+            - containerPort: 27017
+              name: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jhonmongodb
+spec:
+  ports:
+    - port: 27017
+  selector:
+    app: jhonmongodb
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-springboot-mongodbb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-springboot-mongodb
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: azure-springboot-mongodb
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+        - name: azure-springboot-mongodb
+          image: myaksclusterregistry2.azurecr.io/springboot-mongodb:v1
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 250m
+            limits:
+              cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-springboot-mongodb
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+  selector:
+    app: azure-springboot-mongodb

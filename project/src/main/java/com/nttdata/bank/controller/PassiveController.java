@@ -3,11 +3,8 @@ package com.nttdata.bank.controller;
 import com.nttdata.bank.model.bean.Passive;
 import com.nttdata.bank.service.PassiveService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -29,5 +26,11 @@ public class PassiveController {
   @GetMapping
   public Flux<Passive> getPassives() {
     return passiveService.getAllPassive();
+  }
+
+  @GetMapping("/{id}")
+  @ResponseStatus(HttpStatus.OK)
+  public Mono<Passive> getPassiveId(@PathVariable("id") String id){
+    return passiveService.getPassiveId(id);
   }
 }

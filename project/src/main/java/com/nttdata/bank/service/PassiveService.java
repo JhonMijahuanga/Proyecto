@@ -13,4 +13,6 @@ public interface PassiveService {
 
   Mono<Passive> savePassive(Passive passive);
 
+  Mono<Passive> getPassiveId(String id);
+
 }

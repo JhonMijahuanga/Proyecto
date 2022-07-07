@@ -1,13 +1,7 @@
-#spring:
-#  data:
-#    mongodb:
- #     database: bank
-  #    host: jhonmongodb
-   #   port: 27017
 spring:
   data:
     mongodb:
-      #uri: mongodb://localhost:27017
+      uri: mongodb://localhost:27017
       database: bank
       host: jhonmongodb
       port: 27017

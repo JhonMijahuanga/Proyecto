@@ -61,4 +61,10 @@ public class PassiveServiceImpl implements PassiveService {
 
   }
 
+  @Override
+  public Mono<Passive> getPassiveId(String id) {
+    return passiveRepository.findById(id);
+
+  }
+
 }
