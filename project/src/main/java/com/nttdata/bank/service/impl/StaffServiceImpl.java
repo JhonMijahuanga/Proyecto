@@ -3,6 +3,8 @@ package com.nttdata.bank.service.impl;
 import com.nttdata.bank.model.bean.Staff;
 import com.nttdata.bank.model.repository.StaffRepository;
 import com.nttdata.bank.service.StaffService;
+import com.nttdata.bank.service.kafkaService.StaffEventsServiceKafka;
+import com.nttdata.bank.service.kafkaService.StaffServiceKafka;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ public class StaffServiceImpl implements StaffService {
   @Autowired
   private StaffRepository staffRepository;
 
+  @Autowired
+  private StaffEventsServiceKafka staffEventsServiceKafka;
+
   @Override
   public Flux<Staff> getAll() {
 
@@ -27,8 +32,12 @@ public class StaffServiceImpl implements StaffService {
 
   @Override
   public Mono<Staff> save(Staff staff) {
-    log.info("StaffServiceimpl" + staff);
+    log.info("StaffServiceimpl " + staff);
+
+    this.staffEventsServiceKafka.publish(staff);
+
     return staffRepository.save(staff);
+
   }
 
   @Override
@@ -54,6 +63,7 @@ public class StaffServiceImpl implements StaffService {
 
   @Override
   public Mono<Void> deleteStaff(String id) {
+
     return staffRepository.deleteById(id);
   }
 }

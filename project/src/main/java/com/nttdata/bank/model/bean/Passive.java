@@ -6,11 +6,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+//import org.springframework.data.redis.core.RedisHash;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * Clase passice.
  */
+//@RedisHash("Passive")
 @Document(collection = "passives")
 @Data
 @AllArgsConstructor

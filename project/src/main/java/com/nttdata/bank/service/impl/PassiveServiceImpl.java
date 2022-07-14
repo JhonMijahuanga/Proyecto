@@ -7,6 +7,7 @@ import com.nttdata.bank.service.ClientService;
 import com.nttdata.bank.service.PassiveService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.data.redis.core.ReactiveHashOperations;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -19,11 +20,16 @@ import reactor.core.publisher.Mono;
 @Service
 public class PassiveServiceImpl implements PassiveService {
 
+  private static final String KEY = "Passive";
+
   @Autowired
   private PassiveRepository passiveRepository;
 
   @Autowired
   private ClientService clientService;
+
+  /*@Autowired
+  private ReactiveHashOperations<Object, String, Passive> hashOperations;*/
 
   @Override
   public Flux<Passive> getAllPassive() {
@@ -64,7 +70,17 @@ public class PassiveServiceImpl implements PassiveService {
   @Override
   public Mono<Passive> getPassiveId(String id) {
     return passiveRepository.findById(id);
-
+    /*return hashOperations.get(KEY, id)
+        .doOnNext(p -> log.info("passive no encontrado en cache"))
+        .switchIfEmpty(this.getPassiveDatabase(id));*/
   }
+
+  /*private Mono<Passive> getPassiveDatabase(String id){
+    return passiveRepository.findById(id)
+        .flatMap(p -> {
+          log.info("Encontrado en la base de datos "+ id );
+          return this.hashOperations.put(KEY, id, p).thenReturn(p);
+        });
+  }*/
 
 }

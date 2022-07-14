@@ -4,17 +4,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class PassiveControllerTest {
+class PassiveControllerTest {
 
   @Autowired
-  WebTestClient client;
+  WebTestClient webTestClient;
 
   @Test
-  public void testGetPassiveAll(){
-    client.get()
+  void testGetPassiveAll(){
+    webTestClient.get()
         .uri("/api/v1/passives/")
         .exchange()
         .expectStatus().isOk()
@@ -24,8 +25,8 @@ public class PassiveControllerTest {
         ;
   }
   @Test
-  public void testPassiveId(){
-    client.get()
+  void testPassiveId(){
+    webTestClient.get()
         .uri("/api/v1/passives/{id}", "62be1a30a8715725606ddc60")
         .exchange()
         .expectStatus().isOk()
@@ -34,5 +35,17 @@ public class PassiveControllerTest {
             Assertions.assertNotNull(p.getResponseBody()))
         .jsonPath("$.availableBalance").isEqualTo(500)
     ;
+  }
+
+  @Test
+  void testRegisterPassive(){
+    webTestClient.post()
+        .uri("/api/v1/passives")
+        .contentType(MediaType.APPLICATION_JSON_UTF8)
+        .syncBody("{\"id\":\"John\"}")
+        .exchange()
+        .expectStatus().isCreated()
+        .expectBody().isEmpty();
+
   }
 }

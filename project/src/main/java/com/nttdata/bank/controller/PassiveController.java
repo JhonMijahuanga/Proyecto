@@ -20,17 +20,21 @@ public class PassiveController {
 
   @PostMapping
   public Mono<Passive> registerPassive(@RequestBody Passive passive) {
+
     return passiveService.savePassive(passive);
+
   }
 
   @GetMapping
   public Flux<Passive> getPassives() {
+
     return passiveService.getAllPassive();
   }
 
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
   public Mono<Passive> getPassiveId(@PathVariable("id") String id){
+
     return passiveService.getPassiveId(id);
   }
 }
